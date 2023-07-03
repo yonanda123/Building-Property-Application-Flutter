@@ -17,19 +17,24 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     final users = await DatabaseHelper.instance.getUsers();
-    final loggedInUsers = users.where(
+    final loggedInUser = users.firstWhere(
       (user) => user['username'] == username && user['password'] == password,
+      orElse: () => {},
     );
 
-    if (loggedInUsers.isNotEmpty) {
+    if (loggedInUser.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(
-          'isLoggedIn', true); // Menyimpan status login pengguna
-      await prefs.setString(
-          'username', username); // Menyimpan username pengguna
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('username', username);
+      await prefs.setInt('role', loggedInUser['role']);
+
+      int role = loggedInUser['role'];
+      if (role == 1) {
+        Navigator.pushReplacementNamed(context, '/admin_dashboard');
+      } else if (role == 2) {
+        Navigator.pushReplacementNamed(context, '/user_dashboard');
+      }
     } else {
-      // User credentials are invalid
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -48,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
         },
       );
     }
-    // Clear the input fields after login attempt
     _usernameController.clear();
     _passwordController.clear();
   }

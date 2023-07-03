@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DashboardPage extends StatelessWidget {
+class UserDashboardPage extends StatelessWidget {
   final String username;
 
-  DashboardPage({required this.username});
+  UserDashboardPage({required this.username});
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); // Menghapus semua data pengguna yang disimpan dalam SharedPreferences
+    await prefs.clear();
     Navigator.pushReplacementNamed(context, '/login');
   }
 
@@ -16,10 +16,10 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('User Dashboard'),
       ),
       body: Center(
-        child: Text('Welcome to the Dashboard'),
+        child: Text('Welcome, $username (User)'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

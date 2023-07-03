@@ -31,7 +31,8 @@ class DatabaseHelper {
       CREATE TABLE users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
-        password TEXT
+        password TEXT,
+        role INTEGER
       )
     ''');
   }
