@@ -17,15 +17,24 @@ class UserDashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Dashboard'),
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 'logout') {
+                _logout(context);
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Text('Logout'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Center(
         child: Text('Welcome, $username (User)'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _logout(context);
-        },
-        child: Icon(Icons.logout),
       ),
     );
   }

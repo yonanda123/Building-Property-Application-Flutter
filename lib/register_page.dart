@@ -17,7 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final newUser = {
       'username': username,
       'password': password,
-      'role' : 2,
+      'role' : 1,
     };
 
     await DatabaseHelper.instance.insertUser(newUser);

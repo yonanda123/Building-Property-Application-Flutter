@@ -35,7 +35,23 @@ class DatabaseHelper {
         role INTEGER
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE properties(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        property_type TEXT,
+        building_area REAL,
+        surface_area REAL,
+        price REAL,
+        room INTEGER,
+        bathroom INTEGER,
+        floor INTEGER,
+        image TEXT
+      )
+    ''');
   }
+
+  // User CRUD Operations
 
   Future<int> insertUser(Map<String, dynamic> user) async {
     final db = await instance.database;
@@ -45,5 +61,37 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await instance.database;
     return await db.query('users');
+  }
+
+  // Property CRUD Operations
+
+  Future<int> insertProperty(Map<String, dynamic> property) async {
+    final db = await instance.database;
+    return await db.insert('properties', property);
+  }
+
+  Future<List<Map<String, dynamic>>> getProperties() async {
+    final db = await instance.database;
+    return await db.query('properties');
+  }
+
+  Future<int> updateProperty(Map<String, dynamic> property) async {
+    final db = await instance.database;
+    final int id = property['id'];
+    return await db.update(
+      'properties',
+      property,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteProperty(int id) async {
+    final db = await instance.database;
+    return await db.delete(
+      'properties',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
